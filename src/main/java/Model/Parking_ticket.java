@@ -4,21 +4,21 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Parking_ticket {
-    private Vehicle vehicle;
+    private NumberPlate numberPlate;
     private LocalDateTime entryTime;
     private LocalDateTime exitTime;
 
 
-    public Parking_ticket(Vehicle vehicle, LocalDateTime entryTime) {
-        this.vehicle = vehicle;
+    public Parking_ticket(NumberPlate numberPlate, LocalDateTime entryTime) {
+        this.numberPlate = numberPlate;
         this.entryTime = entryTime;
         this.exitTime = null;
     }
 
 
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public NumberPlate getVehicle() {
+        return numberPlate;
     }
 
     public LocalDateTime getEntryTime() {

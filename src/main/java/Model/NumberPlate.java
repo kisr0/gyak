@@ -1,20 +1,46 @@
 package Model;
-
-public class Vehicle {
+// Konstruktor: ezzel hozzuk létre az új járművet
+public class NumberPlate {
+    private int id;
     private String plate;
     private String type;             // pl. "Személyautó", "Motor", "Teherautó"
     private String nationalInsignia;  // pl. "H", "DE", "RO"
     private char plateColor;
+    private boolean guest;
 
-    // Konstruktor: ezzel hozzuk létre az új járművet
-    public Vehicle(String plate, String type, String nationalInsignia, char plateColor) {
+    public NumberPlate(int id, String plate, String type, String nationalInsignia,  char plateColor,boolean guest) {
+        this.id = id;
         this.plate = plate;
         this.type = type;
         this.nationalInsignia = nationalInsignia;
+        this.guest = guest;
         this.plateColor = plateColor;
     }
 
+
+
+
+
     // Getterek és Setterek (az adatok lekéréséhez és módosításához)
+
+
+    public boolean isGuest() {
+        return guest;
+    }
+
+    public void setGuest(boolean guest) {
+        this.guest = guest;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
     public String getPlate() {
         return plate;
     }
