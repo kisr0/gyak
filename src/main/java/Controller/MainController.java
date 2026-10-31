@@ -1,48 +1,92 @@
 package Controller;
 
-import javafx.fxml.FXML;
-
-
+import Model.NumberPlate;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MainController {
+
+    @FXML
+    private TableView<NumberPlate> tablazat;
+
+    @FXML
+    private TableColumn<NumberPlate, String> rendszamOszlop;
+
+    @FXML
+    private TableColumn<NumberPlate, String> ekezesOszlop; // FXML-ben ekezesOszlop szerepel
+
+    @FXML
+    private TableColumn<NumberPlate, String> tavozasOszlop;
+
+    @FXML
+    private TableColumn<NumberPlate, Boolean> berletOszlop;
+
+    @FXML
+    private TableColumn<NumberPlate, String> cegOszlop;
+
     @FXML
     private TextField inputTextField;
-    @FXML
-    private ChoiceBox<String> rendszamSzineKivalaszto;
-    @FXML
-    private Label text;
+
     @FXML
     private TextField rendszamBekeroKeret;
+
     @FXML
-    private Button rendszamButton;
+    private ChoiceBox<String> rendszamSzineKivalaszto;
+
     @FXML
-    private void initialize() {
-        rendszamSzineKivalaszto.getItems().addAll("Fehér", "Zöld");
-        rendszamSzineKivalaszto.setValue("Fehér");
+    private Button button;
+
+    @FXML
+    private Label text;
+
+    private ObservableList<NumberPlate> autoLista = FXCollections.observableArrayList();
+
+    // Ez a metódus fut le AUTOMATIKUSAN az FXML betöltésekor!
+    @FXML
+    public void initialize() {
+        // 1. ChoiceBox feltöltése
+        if (rendszamSzineKivalaszto != null) {
+            rendszamSzineKivalaszto.getItems().addAll("Fehér", "Zöld");
+            rendszamSzineKivalaszto.setValue("Fehér");
+        }
+
+        // 2. Oszlopok összekötése a NumberPlate getterjeivel (ha a táblázat létezik az FXML-ben)
+        if (rendszamOszlop != null) {
+            rendszamOszlop.setCellValueFactory(new PropertyValueFactory<>("plate")); // getPlate()
+        }
+        if (berletOszlop != null) {
+            berletOszlop.setCellValueFactory(new PropertyValueFactory<>("guest"));  // isGuest() -> "guest"
+        }
+
+        // 3. Lista hozzárendelése a táblázathoz
+        if (tablazat != null) {
+            tablazat.setItems(autoLista);
+
+            // Teszt adatsorok hozzáadása
+            autoLista.add(new NumberPlate(1, "ABC-123", "Személyautó", "H", 'W', true));
+            autoLista.add(new NumberPlate(2, "XYZ-987", "Teherautó", "H", 'Y', false));
+        }
     }
+
     @FXML
     private void HandleButton(ActionEvent event) {
-        String rendszam = rendszamBekeroKeret.getText();
-        if (rendszam != null) {
-            rendszam = rendszam.toUpperCase();
+        String rendszam = "";
+        if (rendszamBekeroKeret != null) {
+            rendszam = rendszamBekeroKeret.getText();
+            if (rendszam != null) {
+                rendszam = rendszam.toUpperCase();
+            }
         }
 
-        String szin = rendszamSzineKivalaszto.getValue();
-        //Teszt
-        System.out.println("Rendszám: " + rendszam + ", Szín: " + szin);
-
-        if (text != null) {
-            //Mentés
+        String szin = "";
+        if (rendszamSzineKivalaszto != null) {
+            szin = rendszamSzineKivalaszto.getValue();
         }
+
+        autoLista.add(new NumberPlate(1, rendszam, "Személyautó", "H", 'F', true));
     }
-
-    }
-
-
+}
