@@ -22,19 +22,27 @@ public class MainController {
     private TextField rendszamBekeroKeret;
     @FXML
     private Button rendszamButton;
-
-    private void Initialize() {
+    @FXML
+    private void initialize() {
         rendszamSzineKivalaszto.getItems().addAll("Fehér", "Zöld");
         rendszamSzineKivalaszto.setValue("Fehér");
     }
+    @FXML
+    private void HandleButton(ActionEvent event) {
+        String rendszam = rendszamBekeroKeret.getText();
+        if (rendszam != null) {
+            rendszam = rendszam.toUpperCase();
+        }
 
-    // @FXML
-    private void HandleRendszam() {
-        String a = rendszamBekeroKeret.getText();
-        a = a.toUpperCase();
+        String szin = rendszamSzineKivalaszto.getValue();
+        //Teszt
+        System.out.println("Rendszám: " + rendszam + ", Szín: " + szin);
 
+        if (text != null) {
+            //Mentés
+        }
+    }
 
     }
-}
 
 
