@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
@@ -20,96 +17,55 @@ import java.time.LocalDateTime;
 
 public class MainController {
 
-    @FXML
-    private TableColumn<NumberPlate, String> rendszamOszlop;
+        @FXML
+        private TableView<NumberPlate> tablazat;
 
-    @FXML
-    private TableColumn<Parking_ticket, LocalDateTime> erkezesOszlop;
+        @FXML
+        private TableColumn<NumberPlate, String> rendszamOszlop;
 
-    @FXML
-    private TableColumn<Parking_ticket, LocalDateTime> tavozasOszlop;
+        @FXML
+        private TableColumn<NumberPlate, String> ekezesOszlop; // FXML-ben ekezesOszlop szerepel
 
-    @FXML
-    private TableColumn<NumberPlate, Boolean> berletOszlop;
+        @FXML
+        private TableColumn<NumberPlate, String> tavozasOszlop;
 
-    @FXML
-    private TableView<NumberPlate> tablazat;
+        @FXML
+        private TableColumn<NumberPlate, Boolean> berletOszlop;
 
-    private ObservableList<NumberPlate> autoLista = FXCollections.observableArrayList();
+        @FXML
+        private TableColumn<NumberPlate, String> cegOszlop;
 
-    @FXML
-    public void  setRendszamOszlop()
-    {
-        rendszamOszlop.setCellValueFactory(new PropertyValueFactory<>("plate"));
-        tablazat.setItems(autoLista);
-    }
+        @FXML
+        private TextField rendszamBekeroKeret;
 
-    @FXML
-    private void ujSorHozzaadasa() {
-        // Új objektum hozzáadása a listához -> A TableView automatikusan frissül!
-        autoLista.add(new NumberPlate(1,"ABC-123","Auto","H",'W', true));
-    }
+        @FXML
+        private ChoiceBox<String> rendszamSzineKivalaszto;
 
-    @FXML
-    private TextField inputTextField;
+        @FXML
+        private Button button;
 
-    @FXML
-    private Label text;
-
+        @FXML
+        private Label text;
     @FXML
     private void HandleButton(ActionEvent event) {
-        text.setText("Cigány");
+        System.out.println("Gomb megnyomva!");
     }
 
+        private ObservableList<NumberPlate> autoLista = FXCollections.observableArrayList();
 
-    // Tab controller
-    /*
-    @FXML
-    private TableView<RowData> myTableView;
+        // Ez a metódus fut le AUTOMATIKUSAN az FXML betöltésekor!
+        @FXML
+        public void initialize() {
+            // 1. Oszlopok összekötése a NumberPlate getterjeivel
+            rendszamOszlop.setCellValueFactory(new PropertyValueFactory<>("plate")); // getPlate()
+            berletOszlop.setCellValueFactory(new PropertyValueFactory<>("guest"));  // isGuest() -> "guest"
 
-    @FXML
-    private TableColumn<RowData, String> colName;
+            // 2. Lista hozzárendelése a táblázathoz
+            tablazat.setItems(autoLista);
 
-    @FXML
-    private TableColumn<RowData, String> colStatus;
-
-    // Ebben a listában tároljuk a táblázat adatait
-    private ObservableList<RowData> dataList = FXCollections.observableArrayList();
-
-    @FXML
-    public void initialize() {
-        // 1. Oszlopok összekötése az Adatmodell getterjeivel (getName, getStatus)
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        // 2. Adatlista hozzárendelése a táblázathoz
-        myTableView.setItems(dataList);
-
-        // 3. Sorok egyedi színezése a státusz alapján
-        myTableView.setRowFactory(tv -> new TableRow<RowData>() {
-            @Overridelogout
-            protected void updateItem(RowData item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setStyle("");
-                } else if ("ERROR".equals(item.getStatus())) {
-                    setStyle("-fx-background-color: #ffcdd2;"); // Pirosas háttér
-                } else if ("OK".equals(item.getStatus())) {
-                    setStyle("-fx-background-color: #c8e6c9;"); // Zöldes háttér
-                } else {
-                    setStyle(""); // Alapértelmezett háttér
-                }
-            }
-        });
-    }
-
-    // Új sor hozzáadása gombnyomásra vagy eseményre
-    public void addRow(String name, String status) {
-        dataList.add(new RowData(name, status));
-        // A görgetés automatikusan az új elemhez ugrik, ha szükséges:
-        myTableView.scrollTo(dataList.size() - 1);
-    }
-*/
+            // 3. Teszt adatsor hozzáadása
+            autoLista.add(new NumberPlate(1, "ABC-123", "Személyautó", "H", 'W', true));
+            autoLista.add(new NumberPlate(2, "XYZ-987", "Teherautó", "H", 'Y', false));
+        }
 
 }
