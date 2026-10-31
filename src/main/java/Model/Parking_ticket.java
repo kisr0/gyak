@@ -36,7 +36,7 @@ public class Parking_ticket {
 
     public long getParkingDurationInMinutes() {
         if (exitTime == null) {
-            // Ha még bent áll, a jelenlegi időhöz képest számolunk
+
             return Duration.between(entryTime, LocalDateTime.now()).toMinutes();
         }
         return Duration.between(entryTime, exitTime).toMinutes();
