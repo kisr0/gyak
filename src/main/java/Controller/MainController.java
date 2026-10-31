@@ -30,7 +30,7 @@ public class MainController {
     @FXML
     private TableColumn<RowData, String> colName;
 
-    @FXML
+    @FXMLaaa
     private TableColumn<RowData, String> colStatus;
 
     // Ebben a listában tároljuk a táblázat adatait
