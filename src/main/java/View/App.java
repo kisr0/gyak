@@ -13,7 +13,7 @@ public class App extends Application {
         try {
             System.out.println("1. App start() lefutott, FXML betöltése...");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main-view.fxml"));
             Parent root = loader.load();
 
             System.out.println("2. FXML sikeresen betöltve!");
