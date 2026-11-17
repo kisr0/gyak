@@ -17,6 +17,16 @@ public class AddCompanyController {
 
     @FXML
     private TextField priceField;
+    @FXML
+    private void saveCompany()
+    {
+
+    }
+    @FXML
+    private void cancel() {
+
+    }
+
 
     }
 
