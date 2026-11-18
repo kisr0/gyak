@@ -15,7 +15,7 @@ public class MainController {
     private void openAddCompany() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/hu/parkolo/add-company.fxml")
+                getClass().getResource("/add-company.fxml")
         );
 
         Stage stage = new Stage();
