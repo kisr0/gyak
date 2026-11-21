@@ -1,7 +1,7 @@
-package hu.parkolo.controller;
+package Controller;
 
-import hu.parkolo.Database;
-import hu.parkolo.model.Company;
+import database.Database;
+import Model.Company;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -46,11 +46,13 @@ public class DashboardController {
     private void openEntry() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/hu/parkolo/entry.fxml")
+                getClass().getResource("/entry.fxml")
         );
 
         Scene scene = new Scene(loader.load());
 
+        // FIGYELEM: Még nincs EntryController osztály a Controller mappában!
+        // Amíg a csapattársad nem tölti fel, ez a két sor piros lesz:
         EntryController controller = loader.getController();
         controller.setCompany(company);
 
@@ -100,17 +102,18 @@ public class DashboardController {
             statement.setInt(1, company.getId());
 
             try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    int occupied = result.getInt(1);
+                    int free = company.getParkingSpaceNum() - occupied;
 
-                int occupied = result.getInt(1);
-                int free = company.getParkingSpaceNum() - occupied;
+                    occupiedSpacesLabel.setText(
+                            String.valueOf(occupied)
+                    );
 
-                occupiedSpacesLabel.setText(
-                        String.valueOf(occupied)
-                );
-
-                freeSpacesLabel.setText(
-                        String.valueOf(free)
-                );
+                    freeSpacesLabel.setText(
+                            String.valueOf(free)
+                    );
+                }
             }
 
         } catch (SQLException e) {
