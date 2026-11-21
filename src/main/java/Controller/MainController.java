@@ -30,7 +30,7 @@ public class MainController {
     private void openSelectCompany() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/hu/parkolo/select-company.fxml")
+                getClass().getResource("/select-company.fxml")
         );
 
         Stage stage = new Stage();
