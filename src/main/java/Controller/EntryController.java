@@ -1,12 +1,18 @@
 package Controller;
 
 import Model.Company;
+import database.Database;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class EntryController {
 
@@ -75,7 +81,68 @@ public class EntryController {
 
     @FXML
     private void saveEntry() {
-        // TODO: implement entry saving
+
+        String licensePlate = licensePlateField.getText()
+                .trim().toUpperCase();
+
+        String nationality = nationalityField.getText().trim();
+
+        if (licensePlate.isEmpty() || nationality.isEmpty()) {
+            showAlert("Hiányzó adat",
+                    "Kérlek, töltsd ki a rendszámot és a nemzetiséget!");
+            return;
+        }
+
+        RadioButton selectedColor =
+                (RadioButton) colorGroup.getSelectedToggle();
+
+        String color = selectedColor.getText();
+
+        String checkSql = """
+                SELECT COUNT(*)
+                FROM parking
+                WHERE company_id = ?
+                AND check_out IS NULL
+                """;
+
+        try (Connection connection = Database.connect()) {
+
+            connection.setAutoCommit(false);
+
+            try {
+                try (PreparedStatement statement =
+                             connection.prepareStatement(checkSql)) {
+
+                    statement.setInt(1, company.getId());
+
+                    try (ResultSet result = statement.executeQuery()) {
+
+                        int occupied = result.getInt(1);
+
+                        if (occupied >= company.getParkingspaceNum()) {
+                            connection.rollback();
+                            showAlert("Nincs szabad hely",
+                                    "A parkoló megtelt!");
+                            return;
+                        }
+                    }
+                }
+
+                // TODO: autó mentése és parkolás rögzítése
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            } finally {
+                connection.setAutoCommit(true);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Adatbázishiba", e.getMessage());
+        }
     }
 
     @FXML
