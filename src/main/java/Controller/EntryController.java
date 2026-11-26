@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class EntryController {
 
@@ -128,9 +129,90 @@ public class EntryController {
                     }
                 }
 
-                // TODO: autó mentése és parkolás rögzítése
+                String insertCarSql = """
+                        INSERT INTO cars
+                        (licenseplate, nationality, licenseplate_color)
+                        VALUES (?, ?, ?)
+                        ON CONFLICT(licenseplate, nationality) DO NOTHING
+                        """;
+
+                try (PreparedStatement statement =
+                             connection.prepareStatement(insertCarSql)) {
+
+                    statement.setString(1, licensePlate);
+                    statement.setString(2, nationality);
+                    statement.setString(3, color);
+                    statement.executeUpdate();
+                }
+
+                int carId;
+
+                String findCarSql = """
+                        SELECT id FROM cars
+                        WHERE licenseplate = ?
+                        AND nationality = ?
+                        """;
+
+                try (PreparedStatement statement =
+                             connection.prepareStatement(findCarSql)) {
+
+                    statement.setString(1, licensePlate);
+                    statement.setString(2, nationality);
+
+                    try (ResultSet result = statement.executeQuery()) {
+
+                        if (!result.next()) {
+                            throw new SQLException("Az autó nem található!");
+                        }
+
+                        carId = result.getInt("id");
+                    }
+                }
+
+                String activeSql = """
+                        SELECT COUNT(*) FROM parking
+                        WHERE car_id = ?
+                        AND check_out IS NULL
+                        """;
+
+                try (PreparedStatement statement =
+                             connection.prepareStatement(activeSql)) {
+
+                    statement.setInt(1, carId);
+
+                    try (ResultSet result = statement.executeQuery()) {
+
+                        if (result.getInt(1) > 0) {
+                            connection.rollback();
+                            showAlert("Figyelem",
+                                    "Ez az autó már aktívan parkol!");
+                            return;
+                        }
+                    }
+                }
+
+                String parkingSql = """
+                        INSERT INTO parking
+                        (car_id, company_id, check_in)
+                        VALUES (?, ?, ?)
+                        """;
+
+                try (PreparedStatement statement =
+                             connection.prepareStatement(parkingSql)) {
+
+                    statement.setInt(1, carId);
+                    statement.setInt(2, company.getId());
+                    statement.setString(3,
+                            LocalDateTime.now().toString());
+                    statement.executeUpdate();
+                }
 
                 connection.commit();
+
+                showAlert("Sikeres behajtás",
+                        "Az autó sikeresen rögzítve lett!");
+
+                closeWindow();
 
             } catch (SQLException e) {
                 connection.rollback();
