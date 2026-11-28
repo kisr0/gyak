@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private static final String URL = "jdbc:sqlite:database/parkolo.db";
+    private static final String URL = "jdbc:sqlite:database/projektParkolas.db";
 
     public static Connection connect() throws SQLException {
         Connection connection = DriverManager.getConnection(URL);
