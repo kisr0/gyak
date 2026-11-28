@@ -51,8 +51,6 @@ public class DashboardController {
 
         Scene scene = new Scene(loader.load());
 
-        // FIGYELEM: Még nincs EntryController osztály a Controller mappában!
-        // Amíg a csapattársad nem tölti fel, ez a két sor piros lesz:
         EntryController controller = loader.getController();
         controller.setCompany(company);
 
@@ -77,7 +75,7 @@ public class DashboardController {
         companyNameLabel.setText(company.getName());
 
         totalSpacesLabel.setText(
-                String.valueOf(company.getParkingSpaceNum())
+                String.valueOf(company.getParkingspaceNum())
         );
 
         disabilitySpacesLabel.setText(
@@ -85,7 +83,7 @@ public class DashboardController {
         );
 
         priceLabel.setText(
-                company.getPricePerHour() + " Ft / óra"
+                company.getPricePHour() + " Ft / óra"
         );
 
         String sql = """
@@ -104,7 +102,7 @@ public class DashboardController {
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     int occupied = result.getInt(1);
-                    int free = company.getParkingSpaceNum() - occupied;
+                    int free = company.getParkingspaceNum() - occupied;
 
                     occupiedSpacesLabel.setText(
                             String.valueOf(occupied)
