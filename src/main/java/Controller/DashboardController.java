@@ -66,6 +66,28 @@ public class DashboardController {
         loadDashboard();
     }
 
+    @FXML
+    private void openSearch() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/search.fxml")
+        );
+
+        Scene scene = new Scene(loader.load());
+
+        SearchController controller = loader.getController();
+        controller.setCompany(company);
+
+        Stage stage = new Stage();
+        stage.setTitle("Rendszám kereső");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(companyNameLabel.getScene().getWindow());
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        loadDashboard();
+    }
+
     private void loadDashboard() {
 
         if (company == null) {

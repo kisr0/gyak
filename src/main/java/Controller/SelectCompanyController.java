@@ -128,7 +128,7 @@ public class SelectCompanyController {
         }
 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/hu/parkolo/dashboard.fxml")
+                getClass().getResource("/dashboard.fxml")
         );
 
         if (loader.getLocation() == null) {
@@ -144,9 +144,9 @@ public class SelectCompanyController {
 
         Scene scene = new Scene(loader.load());
 
-       // DashboardController controller = loader.getController();
+       DashboardController controller = loader.getController();
 
-       // controller.setCompany(selected);
+       controller.setCompany(selected);
 
         Stage stage =
                 (Stage) companyList.getScene().getWindow();
